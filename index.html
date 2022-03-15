@@ -11,7 +11,8 @@
             margin-top: 10px;
 
         }
-        button{
+
+        button {
             background-color: deepskyblue;
             border: none;
             color: white;
@@ -27,24 +28,22 @@
     <meta charset="UTF-8">
     <title>Title</title>
 <body>
-<button onclick="setInterval(draw,10)">Start Game</button><br>
+<button onclick="setInterval(draw,10)">Start Game</button>
+<br>
 <canvas id="myCanvas" width="480px" height="320px"></canvas>
+<canvas id="myCanvas1" width="480px" height="320px"></canvas>
 </body>
 <script>
+    let canvas1 = document.getElementById('myCanvas1');
+    let ctx1 = canvas1.getContext('2d');
+    ctx1.font = '16px Arial';
+    ctx1.fillText('Press <- to go left', 10, 100);
+    ctx1.fillText('Press -> to go right', 10, 130);
+    ctx1.fillText('Use mouse to move', 10, 160);
+
+
     let canvas = document.getElementById('myCanvas');
     let ctx = canvas.getContext('2d');
-    // ctx.beginPath();
-    // ctx.rect(0, 0, 50, 50);
-    // ctx.fillStyle = 'red';
-    // ctx.fill();
-    // ctx.closePath()
-
-
-    // ctx.beginPath();
-    // ctx.rect(160, 10, 100, 50);
-    // ctx.strokeStyle = 'red'
-    // ctx.stroke()
-    // ctx.closePath()
     let x = canvas.width / 2;
     let y = canvas.height - 30;
     let dx = 2;
@@ -58,17 +57,16 @@
     let rightPressed = false;
     let leftPressed = false;
 
-    let brickRowCount = 3;
-    let brickColumnCount = 5;
-    let brickWidth = 75;
-    let brickHeight = 20;
-    let brickPadding = 10;
+    let brickRowCount = 3; // dòng
+    let brickColumnCount = 5; // hàng
+    let brickWidth = 75;  // chiều rộng
+    let brickHeight = 20; // chiều ddài
+    let brickPadding = 10; // khoảng cách giữa các ô
     let brickOffsetTop = 30;
     let brickOffsetLeft = 30;
     let bricks = [];
     let score = 0;
     let lives = 3;
-
 
 
     for (let c = 0; c < brickColumnCount; c++) {
@@ -78,7 +76,7 @@
         }
     }
 
-    function collistionDetection() {    //
+    function collistionDetection() {    // phát hiện va chạm
         for (let c = 0; c < brickColumnCount; c++) {
             for (let r = 0; r < brickRowCount; r++) {
                 let b = bricks[c][r];
@@ -88,7 +86,7 @@
                         b.status = 0
                         score++
                         if (score === brickColumnCount * brickRowCount) {
-                            alert('You Win !!!');
+                            alert('You Win !!! Your score is ' + (score + lives));
                             document.location.reload()
                         }
                     }
@@ -99,7 +97,7 @@
         }
     }
 
-    function drawBricks() {
+    function drawBricks() { // vẽ khối
 
         for (let c = 0; c < brickColumnCount; c++) {
             for (let r = 0; r < brickRowCount; r++) {
@@ -119,21 +117,22 @@
         }
     }
 
-    function drawScore() {
+    function drawScore() {  // hiển thị điểm
         ctx.font = '16px Arial';
         ctx.fillStyle = '#0095DD';
         ctx.fillText('Score:' + score, 8, 20);
 
     }
-    function drawLives() {
+
+    function drawLives() { // hiển thị mạng
         ctx.font = '16px Arial';
         ctx.fillStyle = '#0095DD';
-        ctx.fillText('Lives:' + lives, canvas.width-65 , 20);
+        ctx.fillText('Lives:' + lives, canvas.width - 65, 20);
 
     }
 
 
-    function drawBall() {
+    function drawBall() { // vẽ khối tròn
 
         ctx.beginPath();
         ctx.arc(x, y, ballRadius, 0, Math.PI * 2, false);
@@ -145,9 +144,9 @@
 
     }
 
-    document.addEventListener('keydown', keyDownHandler, false);
+    document.addEventListener('keydown', keyDownHandler, false); // sự kiện phím
     document.addEventListener('keyup', keyUpHandler, false);
-    document.addEventListener('mousemove', mouseMoveHandler, false);
+    document.addEventListener('mousemove', mouseMoveHandler, false);// sự kiện chuột
 
     function keyDownHandler(e) {
         if (e.key === "Right" || e.key === "ArrowRight") {
@@ -173,7 +172,7 @@
 
     }
 
-    function drawPaddle() {
+    function drawPaddle() { // vẽ ván đẩy
         ctx.beginPath();
         ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
         ctx.fillStyle = '#0095DD';
@@ -182,8 +181,7 @@
     }
 
 
-
-    function draw() {
+    function draw() { // hiển thị
         // setInterval(draw,10)
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         drawBall()
@@ -201,11 +199,10 @@
                 }
             } else {
                 lives--;
-                if (lives===0){
+                if (lives === 0) {
                     window.location.reload();
-                    alert('Game Over !!! '+'Your score is '+score);
-                }
-               else {
+                    alert('Game Over !!! ' + 'Your score is ' + score);
+                } else {
                     x = canvas.width / 2;
                     y = canvas.height - 30;
                     dx = 2;
@@ -226,6 +223,7 @@
             paddleX -= 7;
         }
     }
+
     draw()
 
 </script>
